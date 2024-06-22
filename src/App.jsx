@@ -1,12 +1,13 @@
 import React, { Suspense, lazy, useEffect, useState } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import "./App.css";
 import Loading from "./components/Loading/Loading";
+import Layout from "./components/layout/Layout";
 
 //pages
 const Login = lazy(() => import("./pages/Login"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Settings = lazy(() => import("./pages/Settings"));
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -18,16 +19,19 @@ function App() {
   }, []);
 
   return (
-    <>
+    <div className="w-full h-screen bg">
       <Router>
         <Suspense fallback={<Loading />}>
           {loading ? (
             <Loading />
           ) : (
-            <Routes>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/" element={<Login />} />
-            </Routes>
+            <Layout>
+              <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/settings" element={<Settings />} />
+              </Routes>
+            </Layout>
           )}
         </Suspense>
       </Router>
@@ -43,7 +47,7 @@ function App() {
         pauseOnHover
         theme="dark"
       ></ToastContainer>
-    </>
+    </div>
   );
 }
 
