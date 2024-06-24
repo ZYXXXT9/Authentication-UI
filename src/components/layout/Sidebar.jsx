@@ -6,7 +6,7 @@ const Sidebar = () => {
     <div className="w-64 h-screen p-4 bg-gray-800 text-white">
       <ul>
         <li className="mb-4">
-          <Link to="/dashboard" className="text-lg font-semibold">
+          <Link to="/" className="text-lg font-semibold">
             Dashboard
           </Link>
         </li>

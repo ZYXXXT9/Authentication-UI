@@ -4,7 +4,7 @@ import Sidebar from "./Sidebar";
 
 const Layout = ({ children }) => {
   const location = useLocation();
-  const isLoginPage = location.pathname === "/";
+  const isLoginPage = location.pathname === "/login";
 
   return (
     <div className="flex justify-center justify-items-center">

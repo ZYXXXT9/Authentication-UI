@@ -1,58 +1,56 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaLock, FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { tokenAPI, userAccAPI } from "../redux/api/api";
 
-//utilities
-
-function Login(props) {
-  // const userAccountId = JSON.parse(localStorage.getItem("userAccountId"));
-
-  const [userName, setUserAccountId] = useState("");
+const Login = () => {
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    // Perform login logic here (e.g., authentication)
-    navigate("/dashboard");
+  useEffect(() => {
+    sessionStorage.clear();
+  }, []);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      if (username === "" || username === null) {
+        toast.warning("Please Enter Username");
+      } else if (password === "" || password === null) {
+        toast.warning("Please Enter Password");
+      } else {
+        const response = await userAccAPI().login(username, password);
+        if (response.data.code === 0) {
+          toast.error(`${response.data.message}!`);
+        } else {
+          const response = await tokenAPI().getToken();
+          if (response.status === 200) {
+            toast.success("Success");
+            sessionStorage.setItem(
+              "token",
+              JSON.stringify(response.data.data.authToken)
+            );
+            sessionStorage.setItem(
+              "expiry",
+              JSON.stringify(response.data.data.tokenExpiry)
+            );
+            sessionStorage.setItem("username", username);
+            navigate("/");
+          }
+        }
+      }
+    } catch (err) {
+      sessionStorage.clear();
+      toast.error("Oops! Error Occurred In Getting Token.");
+      sessionStorage.setItem(
+        "errGetToken",
+        JSON.stringify(`${Date().toLocaleString()} ${err}`)
+      );
+    }
   };
-
-  // const saveToLocalStorage = (props) => {
-  //   const { userAccountId } = props;
-
-  //   localStorage.setItem("userAccountId", JSON.stringify(userAccountId));
-  // };
-
-  // const handleLogin = async (e) => {
-  //   try {
-  //     const response = await PI.post(
-  //       `api/useraccount/validatelogin?userName=${userName}&password=${password}`
-  //     );
-  //     if (response.status === 200) {
-  //       if (response.data.code === 0)
-  //         toast.error(<ErrMsg msg={`${response.data.message}!`} />);
-  //     } else {
-  //       saveToLocalStorage(response.data.document);
-  //       window.location.reload(true);
-  //     }
-  //   } catch (err) {
-  //     if (String(err).includes("401")) {
-  //       window.location.reload();
-  //     } else {
-  //       localStorage.setItem(
-  //         "errLogIn",
-  //         JSON.stringify(`${Date().toLocaleString()} ${err}`)
-  //       );
-  //       toast.error(
-  //         <ErrMsg msg="Oops! Error Occurred in Logging In" err={String(err)} />
-  //       );
-  //     }
-  //   }
-  // };
-
-  // if (userAccountId) {
-  //   return <Navigate to={redirectTo ? redirectTo : "/dashboard"} />;
-  // }
 
   return (
     <div className="w-full h-screen flex items-center justify-center tracking-wider">
@@ -66,9 +64,9 @@ function Login(props) {
             <input
               type="text"
               className="w-11/12 bg-transparent outline-none text-center"
-              placeholder="Enter your Username"
-              onChange={(e) => setUserAccountId(e.target.value)}
-              required
+              placeholder="Enter your username"
+              onChange={(e) => setUsername(e.target.value)}
+              // required
             />
             <div className="w-2/12 flex items-center justify-center">
               <FaUser className="text-xl" />
@@ -81,7 +79,7 @@ function Login(props) {
               className="w-11/12 bg-transparent outline-none text-center"
               placeholder="Enter your Password"
               onChange={(e) => setPassword(e.target.value)}
-              required
+              // required
             />
             <div className="w-2/12 flex items-center justify-center">
               <FaLock className="text-xl" />
@@ -97,6 +95,6 @@ function Login(props) {
       </div>
     </div>
   );
-}
+};
 
 export default Login;
