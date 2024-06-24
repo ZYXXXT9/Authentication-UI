@@ -1,35 +1,26 @@
-import React, { Suspense, lazy, useEffect, useState } from "react";
+import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import "./App.css";
-import Loading from "./components/Loading/Loading";
 
 //pages
-const Login = lazy(() => import("./pages/Login"));
-const Dashboard = lazy(() => import("./pages/Dashboard"));
+import Appheader from "./components/layout/Appheader";
+import Layout from "./components/layout/Layout";
+import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
+import Settings from "./pages/Settings";
 
 function App() {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  }, []);
-
   return (
-    <>
+    <div className="w-full h-screen bg">
       <Router>
-        <Suspense fallback={<Loading />}>
-          {loading ? (
-            <Loading />
-          ) : (
-            <Routes>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/" element={<Login />} />
-            </Routes>
-          )}
-        </Suspense>
+        <Layout>
+          <Appheader></Appheader>
+          <Routes>
+            <Route path="/" element={<Dashboard />}></Route>
+            <Route path="/login" element={<Login />}></Route>
+            <Route path="/settings" element={<Settings />}></Route>
+          </Routes>
+        </Layout>
       </Router>
       <ToastContainer
         position="top-center"
@@ -43,7 +34,7 @@ function App() {
         pauseOnHover
         theme="dark"
       ></ToastContainer>
-    </>
+    </div>
   );
 }
 
