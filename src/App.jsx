@@ -3,7 +3,6 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 //pages
-import Appheader from "./components/layout/Appheader";
 import Layout from "./components/layout/Layout";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
@@ -14,7 +13,7 @@ function App() {
     <div className="w-full h-screen bg">
       <Router>
         <Layout>
-          <Appheader></Appheader>
+          {/* <Appheader></Appheader> */}
           <Routes>
             <Route path="/" element={<Dashboard />}></Route>
             <Route path="/login" element={<Login />}></Route>

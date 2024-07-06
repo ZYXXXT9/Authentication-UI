@@ -1,12 +1,11 @@
 import axios from "axios";
-import { CfgIdx, Configs } from "../../../public/config";
 
 // if there's no found same subdomain in config.js, the logic is to get the first item in array.
-export const API_domain = Configs
-  ? Configs.tenant[CfgIdx === -1 ? 0 : CfgIdx].api_url
+const API_domain = window.Configs
+  ? window.Configs.tenant[window.CfgIdx === -1 ? 0 : window.CfgIdx].api_url
   : "";
 
-export const API = axios.create();
+const API = axios.create();
 
 // Request interceptor for API calls
 API.interceptors.request.use(

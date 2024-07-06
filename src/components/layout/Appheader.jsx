@@ -24,7 +24,6 @@ const Appheader = () => {
     <div>
       {showmenu && (
         <div className="header">
-          <h1>{displayusername}</h1>
           <Link to={"/"}>Home</Link>
           <Link to={"/settings"}>Settings</Link>
           <Link to={"/login"}>Logout</Link>
