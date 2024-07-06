@@ -3,8 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 
 const Layout = ({ children }) => {
-  // const location = useLocation();
-
   const navigate = useNavigate();
   const location = useLocation();
 

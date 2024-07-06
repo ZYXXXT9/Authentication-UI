@@ -1,4 +1,4 @@
-export const Configs = {
+const Configs = {
   tenant: [
     {
       tenant_name: "localhost",
@@ -11,8 +11,12 @@ export const Configs = {
   ],
 };
 
-export const SubDomain = window.location.hostname.split(".")[0];
-export const CfgIdx = Configs.tenant.findIndex(
+window.Configs = Configs;
+
+const SubDomain = window.location.hostname.split(".")[0];
+const CfgIdx = Configs.tenant.findIndex(
   ({ tenant_name }) =>
     String(tenant_name).toUpperCase() === String(SubDomain).toUpperCase()
 );
+
+window.CfgIdx = CfgIdx;
